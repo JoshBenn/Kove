@@ -2,9 +2,10 @@
 
 cmake_minimum_required( VERSION 3.20 )
 project(
-  Kove   
+  kove
   VERSION 0.0.1
-  LANGUAGES CXX 
+  LANGUAGES CXX
+  
 )
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
@@ -51,31 +52,31 @@ message("Sources: ${SOURCES}")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ")
 
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
-set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
+include_directories($CMAKE_SOURCE_DIR/include)
+set(HEADER_DIR $CMAKE_SOURCE_DIR/include)
 
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(kove ${SOURCES})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-  set_target_properties( PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+  set_target_properties(kove PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 endif()
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set_target_properties( PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -g")
+  set_target_properties(kove PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -g")
 endif()
 if (CMAKE_BUILD_TYPE STREQUAL "Test")
-  set_target_properties( PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -g")
+  set_target_properties(kove PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -g")
 endif()
 
 
 set(BUILD_DIR build)
-set_target_properties( PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
+set_target_properties(kove PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
 
 
 
-install(TARGETS  DESTINATION bin)
+install(TARGETS kove DESTINATION bin)
 
 

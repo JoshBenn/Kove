@@ -2,14 +2,16 @@
 
 #include "../include/integer_variables.hpp"
 #include "../include/string_variables.hpp"
+#include "ast_node.hpp"
 
 class VariableDeclarationNode : public ASTNode {
-public:
-  std::string variableName;
-  std::unique_ptr<ASTNode> variable;
+  public:
+    std::string variableName;
+    std::unique_ptr<ASTNode> variable;
 
-  VariableDeclarationNode(std::string &name, std::unique_ptr<ASTNode> type)
-      : variableName(name), variable(std::move(type)) {}
+    VariableDeclarationNode(std::string &name, std::unique_ptr<ASTNode> type)
+        : variableName(name), variable(std::move(type)) {}
 
-  void display(int depth);
+    void display(int depth) const override;
+
 };

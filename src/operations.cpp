@@ -1,6 +1,6 @@
 
 
-#include "ast_node.hpp"
+#include "../include/ast_node.hpp"
 
 ///Binary Expression for mathematics
 class BinaryExpressionNode : public ASTNode {

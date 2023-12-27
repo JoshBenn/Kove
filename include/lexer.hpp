@@ -15,6 +15,18 @@ struct Token {
     std::string value;
 };
 
-class Lexer;
+class Lexer {
+    std::string input;
+    size_t position;
+
+public:
+    Lexer(const std::string& input) : input(input), position(0) {}
+
+    //Tokenization logic
+    std::vector<Token> tokenize(); 
+
+private:
+    std::string readWhile(std::function<bool(char)> predicate);
+};
 
 

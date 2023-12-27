@@ -5,14 +5,14 @@
 
 #include "../include/ast_node.hpp"
 
-class IntNode;
-class I8Node;
-class I16Node;
-class I32Node;
-class I64Node;
+template <class T> class IntNode : public ASTNode {
+  private:
+    T value;
 
-class UIntNode;
-class U8Node;
-class U16Node;
-class U32Node;
-class U64Node;
+  public:
+    explicit IntNode(T val) : value(val) {}
+
+    void display(int depth = 0) const override { 
+      std::cout << value; 
+    }
+};

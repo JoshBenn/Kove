@@ -3,7 +3,7 @@
   "bugs": "null",
   "build_dir": "build",
   "cmake_version": "3.20",
-  "compiler": "g++",
+  "compiler": "clang++",
   "default_mode": "Release",
   "dependencies": [],
   "description": "",

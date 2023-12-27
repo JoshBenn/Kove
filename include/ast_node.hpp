@@ -3,6 +3,7 @@
 #include "lexer.hpp"
 #include <functional>
 #include <memory>
+#include <iostream>
 
 /// Abstract Syntax Tree
 class ASTNode {
@@ -12,6 +13,3 @@ public:
 
   // Common functions
 };
-
-using NodeCreator = std::function<std::unique_ptr<ASTNode>(const Token &)>;
-extern std::map<std::string, NodeCreator> node_mapper;
