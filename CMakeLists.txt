@@ -2,10 +2,9 @@
 
 cmake_minimum_required( VERSION 3.20 )
 project(
-  
+  Kove   
   VERSION 0.0.1
-  LANGUAGES CXX
-  
+  LANGUAGES CXX 
 )
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
@@ -52,14 +51,14 @@ message("Sources: ${SOURCES}")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ")
 
 
-include_directories($CMAKE_SOURCE_DIR/include)
-set(HEADER_DIR $CMAKE_SOURCE_DIR/include)
+include_directories(${CMAKE_SOURCE_DIR}/include)
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
 
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
 
-add_executable( ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
   set_target_properties( PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -O2")
