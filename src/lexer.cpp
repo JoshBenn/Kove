@@ -15,6 +15,15 @@ std::vector<Token> Lexer::tokenize() {
             continue;
         }
 
+        //Check for string literal
+        if (current == '"') {
+            position++; //skip "
+            std::string strValue = readWhile([](char ch) { return ch != '"'; });
+            position++; //skip "
+
+            tokens.push_back({TokenType::STRING_LITERAL, strValue});
+        }
+
         if (isalpha(current)) {
             std::string value = readWhile([](char ch) { return isalpha(ch) || isdigit(ch); });
             Token token;

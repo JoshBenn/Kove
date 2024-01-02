@@ -1,81 +1,72 @@
 #include "../include/string_variables.hpp"
 
-class StringNode : public ASTNode {
-private:
-    std::string value;
-    size_t length;
+//function to append to the back of the string
+void StringNode::append(std::string& str) {
+    value.append(str);
+    length = value.length();
+}
 
-public:
-    explicit StringNode(std::string str) : value(str), length(str.length()) {}
+void StringNode::prepend(std::string& str) {
+    value = str + value;
+    length = value.length();
+}
 
-    //function to append to the back of the string
-    void append(std::string& str) {
-        value.append(str);
-        length = value.length();
-    }
+bool StringNode::contains(std::string& str) {
+    return value.find(str) != std::string::npos;
+}
 
-    void prepend(std::string& str) {
-        value = str + value;
-        length = value.length();
-    }
+void StringNode::reverse() {
+    std::reverse(value.begin(), value.end());
+}
 
-    bool contains(std::string& str) {
-        return value.find(str) != std::string::npos;
-    }
+std::vector<std::string> StringNode::split() {
+    std::vector<std::string> str_set;
+    std::string str = "";
 
-    void reverse() {
-        std::reverse(value.begin(), value.end());
-    }
-
-    std::vector<std::string> split() {
-        std::vector<std::string> str_set;
-        std::string str = "";
-
-        for(size_t i  = 0; i < length; ++i) {
-            if (value[i] == ' ') {
-                if (!str.empty()) {
-                    str_set.push_back(str);
-                    str = "";
-                }
-                continue;
+    for(size_t i  = 0; i < length; ++i) {
+        if (value[i] == ' ') {
+            if (!str.empty()) {
+                str_set.push_back(str);
+                str = "";
             }
-            str += value[i];
+            continue;
         }
-
-        if (!str.empty()) {
-            str_set.push_back(str);
-        }
-
-        return str_set;
+        str += value[i];
     }
 
-    std::vector<std::string> split(char ch) {
-        std::vector<std::string> str_set;
-        std::string str = "";
+    if (!str.empty()) {
+        str_set.push_back(str);
+    }
 
-        for(size_t i  = 0; i < length; ++i) {
-            if (value[i] == ch) {
-                if (!str.empty()) {
-                    str_set.push_back(str);
-                    str = "";
-                }
-                continue;
+    return str_set;
+}
+
+std::vector<std::string> StringNode::split(char ch) {
+    std::vector<std::string> str_set;
+    std::string str = "";
+
+    for(size_t i  = 0; i < length; ++i) {
+        if (value[i] == ch) {
+            if (!str.empty()) {
+                str_set.push_back(str);
+                str = "";
             }
-            str += value[i];
+            continue;
         }
-
-        if (!str.empty()) {
-            str_set.push_back(str);
-        }
-
-        return str_set;
+        str += value[i];
     }
 
-    size_t size() {
-        return length;
+    if (!str.empty()) {
+        str_set.push_back(str);
     }
 
-    void display(int depth = 0) const override {
-        std::cout << value;
-    }
-};
+    return str_set;
+}
+
+size_t StringNode::size() {
+    return length;
+}
+
+void StringNode::display(int depth) const {
+    std::cout << value;
+}

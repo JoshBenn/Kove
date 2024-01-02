@@ -5,7 +5,7 @@
 #include "ast_node.hpp"
 
 class VariableDeclarationNode : public ASTNode {
-  public:
+public:
     std::string variableName;
     std::unique_ptr<ASTNode> variable;
 
@@ -13,5 +13,4 @@ class VariableDeclarationNode : public ASTNode {
         : variableName(name), variable(std::move(type)) {}
 
     void display(int depth) const override;
-
 };

@@ -41,63 +41,78 @@ private:
         return tokens[currentPosition++];
     }
 
+
+    //Variable declaration
     std::unique_ptr<ASTNode> parseVariableDeclaration() {
-        // var or const
+        //Consum var or const
         auto varToken = consume(TokenType::VARIABLE_DECLARATION);
 
-        // Variable name
+        //Variable name
         auto nameToken = consume(TokenType::EXPRESSION);
-        Token varType;
+
         // Type annotation
+        Token typeToken;
         std::unique_ptr<ASTNode> typeNode;
         if (peek().general_type == TokenType::OPERATOR && peek().value == ":") {
-            consume(TokenType::OPERATOR); //Expect :
-            varType = consume(TokenType::TYPE_SPECIFIER);
+            consume(TokenType::OPERATOR); //Expect ':'
+            typeToken = consume(TokenType::TYPE_SPECIFIER);
         } else {
             // TODO: Auto infer type -- Current: default int
-            varType = Token{TokenType::TYPE_SPECIFIER, "int"};
+            typeToken = Token{TokenType::TYPE_SPECIFIER, "int"};
         }
 
         consume(TokenType::OPERATOR); // Expect '='
-        auto initValue = consume(TokenType::INTEGER_LITERAL); // Expect the expression
-        consume(TokenType::OPERATOR);       // Expect ';'
 
-        typeNode = createTypeNode(varType, initValue);
+        //Initialize based on type
+        Token valueToken;
+        if (typeToken.value == "string") { //for strings
+            valueToken = consume(TokenType::STRING_LITERAL); // Expect the expression
+        } else {
+            valueToken = consume(TokenType::INTEGER_LITERAL); // Expect the expression
+        }
+
+        //Consume ';'
+        consume(TokenType::OPERATOR); 
+
+        std::unique_ptr<ASTNode> initializer = createTypeNode(typeToken, valueToken);
 
         return make_unique<VariableDeclarationNode>(nameToken.value, std::move(typeNode));
     }
 
     
-    std::unique_ptr<ASTNode> createTypeNode(const Token &typeSpecifierToken, const Token &value) {
+    std::unique_ptr<ASTNode> createTypeNode(const Token &typeSpecifierToken, const Token &valueToken) {
         if(typeSpecifierToken.value == "int") {
-            return make_unique<IntNode<int>>(static_cast<int>(std::stoi(value.value)));
+            return make_unique<IntNode<int>>(static_cast<int>(std::stoi(valueToken.value)));
         } 
         if (typeSpecifierToken.value == "i8"){
-            return make_unique<IntNode<int8_t>>(static_cast<int8_t>(std::stoi(value.value)));
+            return make_unique<IntNode<int8_t>>(static_cast<int8_t>(std::stoi(valueToken.value)));
         }
         if (typeSpecifierToken.value == "i16"){
-            return make_unique<IntNode<int16_t>>(static_cast<int16_t>(std::stoi(value.value)));
+            return make_unique<IntNode<int16_t>>(static_cast<int16_t>(std::stoi(valueToken.value)));
         }
         if (typeSpecifierToken.value == "i32"){
-            return make_unique<IntNode<int32_t>>(static_cast<int32_t>(std::stoi(value.value)));
+            return make_unique<IntNode<int32_t>>(static_cast<int32_t>(std::stoi(valueToken.value)));
         }
         if (typeSpecifierToken.value == "i64"){
-            return make_unique<IntNode<int64_t>>(static_cast<int64_t>(std::stoi(value.value)));
+            return make_unique<IntNode<int64_t>>(static_cast<int64_t>(std::stoi(valueToken.value)));
         }
         if(typeSpecifierToken.value == "uint") {
-            return make_unique<IntNode<unsigned int>>(static_cast<unsigned int>(std::stoi(value.value)));
+            return make_unique<IntNode<unsigned int>>(static_cast<unsigned int>(std::stoi(valueToken.value)));
         } 
         if (typeSpecifierToken.value == "u8"){
-            return make_unique<IntNode<uint8_t>>(static_cast<uint8_t>(std::stoi(value.value)));
+            return make_unique<IntNode<uint8_t>>(static_cast<uint8_t>(std::stoi(valueToken.value)));
         }
         if (typeSpecifierToken.value == "u16"){
-            return make_unique<IntNode<uint16_t>>(static_cast<uint16_t>(std::stoi(value.value)));
+            return make_unique<IntNode<uint16_t>>(static_cast<uint16_t>(std::stoi(valueToken.value)));
         }
         if (typeSpecifierToken.value == "u32"){
-            return make_unique<IntNode<uint32_t>>(static_cast<uint32_t>(std::stoi(value.value)));
+            return make_unique<IntNode<uint32_t>>(static_cast<uint32_t>(std::stoi(valueToken.value)));
         }
         if (typeSpecifierToken.value == "u64"){
-            return make_unique<IntNode<uint64_t>>(static_cast<uint64_t>(std::stoi(value.value)));
+            return make_unique<IntNode<uint64_t>>(static_cast<uint64_t>(std::stoi(valueToken.value)));
+        }
+        if (typeSpecifierToken.value == "string") {
+            return make_unique<StringNode>(valueToken.value);
         }
 
         //Type not found
@@ -199,6 +214,7 @@ int main() {
         "var x = 5;", 
         "var y: i32 = 10;", 
         "const z = 123456789;",
+        R"(var str: string = "Yo dawg";)"
         // "if (x > y) { x = 10; }",
     };
 
