@@ -248,9 +248,10 @@ enum Colors {
 
     fn fmt(self) -> std::fmt::Result {
         match self {                   // Maybe implicit returns?
-        self::Hex(s) => s,
-        self::RGB(r, g, b) => (r, g, b) -> str,
-        _ => s -> str, 
+            self::Hex(s) => s,
+            self::RGB(r, g, b) => (r, g, b) -> str,
+            _ => s -> str, 
+        }
     }
 }
 

@@ -167,6 +167,7 @@ fn is_whitespace(c: char) -> bool {
         | '\u{202F}'  // Narrow No-Break Space
         | '\u{205F}'  // Medium Mathematical Space (Latex `\:`)
         | '\u{3000}'  // Ideographic Space
+        | '\u{FEFF}'  // Zero Width No-break Space
           => true,
         _ => false,
     }
