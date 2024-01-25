@@ -1,0 +1,67 @@
+axiom Status {
+    adult(age: uint) :- age >= 18,     // Can define a relation with `:-`
+    child :- !adult,                   // Not exactly sure how this syntax should work
+    father :- male && parent,
+    mother :- female && parent,
+    male |!| female,                   // Exclusive Or - Must declare one or the other
+    parent(p),
+}
+
+struct Person {
+    name: str,
+    age: u32,
+
+    trait {
+        Status {
+            parent(None),   // Must specify passed values -- age is a property so don't have to specify that one and can be done automatically
+            male,
+            ...             // Syntax pulls in the rest
+        }
+        Living :- true,     // Can define their own
+        std::map::hash,     // Can import external traits
+        std::fs::serialize,
+    }
+
+    fn new(name: str, age: u32) -> Self {
+        return Person { name, age };  // You can also just Person... with no semicolon as a return, but I find this more explicit
+    }
+    
+    // A simple method to display information
+    fn display(self) {          // CoW by default
+        println("Name: {}, Age: {}", self.name, self.age);
+    }
+}
+
+// Can add functions to an internal struct
+fn Person::increase_age(&self) { // &self passes a modifiable reference, :> if passing ownership
+    self.age := self.age + 1; // := is the dereference -- syntacticly explicit
+}
+
+// Pure functions - scope is contained entirely within the function
+// This is a bad example as this can be either, but ultimately it introduces a "restriction" on the function
+// where the function cannot create or modify variables
+#[trait(Pure)]
+fn greet(person: Person) {
+    printf("Hello, %s!\n", person.name); // Printf supported
+}
+
+// Main function
+fn main() {
+    // Creating a new `Person`, `var` for mutable, `let` for immutable
+    var person = Person::new("Alice", 30);
+    person.increase_age();
+
+    // Using methods of `Person`
+    person.display();
+    if person.adult {
+        println!("{} is an adult.", person.name);
+    }
+
+    // Calling a standalone function -- CoW by default
+    greet(person);
+
+    // Variables and assignments
+    var mut counter = 0;
+    counter++;
+    println("Counter value: {}", counter);
+}
